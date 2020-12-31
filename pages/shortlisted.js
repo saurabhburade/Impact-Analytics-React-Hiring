@@ -27,7 +27,7 @@ function shortlisted() {
                             status={element.status}
                             idx={idx}
                             actions={true}
-                            {element.id}
+                            key={element.id}
                         />
                     );
                 })}
