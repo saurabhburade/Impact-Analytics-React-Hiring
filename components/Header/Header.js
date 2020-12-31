@@ -14,6 +14,9 @@ function Header() {
                 <Link href={`/rejected`}>
                     <ul>Goto Rejected</ul>
                 </Link>
+                 <Link href={`/`}>
+                    <ul onClick={()=>{localStorage.clear();location.reload();}}>Re-run Demo</ul>
+                </Link>
             </nav>
         </header>
     );
