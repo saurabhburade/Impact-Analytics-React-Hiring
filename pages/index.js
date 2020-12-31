@@ -1,65 +1,77 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-
+import Head from "next/head";
+import {useState, useEffect} from "react";
+import "../styles/Home.module.css";
+import CandidateCard from "../components/CandidateCard/CandidateCard";
+import Header from "../components/Header/Header";
 export default function Home() {
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
+    const [data, setdata] = useState([]);
+    const [searchInput, setsearchInput] = useState("");
+    useEffect(() => {
+        fetch(
+            "https://cors-anywhere.herokuapp.com/https://s3-ap-southeast-1.amazonaws.com/he-public-data/users49b8675.json",
+            {
+                method: "GET",
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    Host: "s3-ap-southeast-1.amazonaws.com",
+                },
+            }
+        )
+            .then(res => res.json())
+            .then(d => {
+                if (!localStorage.getItem("data")) {
+                    localStorage.setItem("data", JSON.stringify(d));
+                }
+                setdata(d);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }, []);
+    const handleSearch = () => {
+        if (!!searchInput.trim()) {
+            const found = data.find(element => element.name === searchInput);
+            if (!!found) {
+                setdata([found]);
+            } else {
+                alert("No Data Found");
+            }
+        } else {
+            alert("No Data Found");
+        }
+    };
+    return (
+        <>
+            <Head>
+                <title>Impact Analytics</title>
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
+            <Header />
+            <div className="main">
+                <div className="w-100 d-flex justify-center search-cont">
+                    <input
+                        type="text"
+                        className="w-100"
+                        value={searchInput}
+                        onChange={e => setsearchInput(e.target.value)}
+                    />
+                    <button className="btn" onClick={handleSearch}>
+                        Search
+                    </button>
+                </div>
+                <div className="w-100 d-flex flex-wrap ">
+                    {data.map(element => {
+                        return (
+                            <CandidateCard
+                                key={element.id}
+                                image={element.Image}
+                                name={element.name}
+                                id={element.id}
+                            />
+                        );
+                    })}
+                </div>
+            </div>
+        </>
+    );
 }

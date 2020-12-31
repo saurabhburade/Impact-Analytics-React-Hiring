@@ -1,0 +1,12 @@
+header {
+    border-bottom: 1px solid gainsboro;
+}
+ul {
+    width: fit-content;
+    cursor: pointer;
+    color: blue;
+}
+nav {
+    display: flex;
+    flex-wrap:wrap
+}

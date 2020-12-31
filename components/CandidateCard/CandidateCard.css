@@ -1,0 +1,37 @@
+.candidate-card-cont {
+    width: 20em;
+    height: fit-content;
+    background: rgb(255, 255, 255);
+    margin: 2%;
+    padding: 1% 2%;
+}
+.candidate-card {
+    /* height: 100%; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px;
+    cursor: pointer;
+    transition-duration: 300ms;
+}
+.candidate-card-cont:hover {
+    box-shadow: 1px 1px 15px rgb(223, 223, 223);
+}
+.candidate-card > img {
+    width: 5em;
+    height: 5em;
+}
+.candidate-card > p {
+    width: 100%;
+    text-align: center;
+}
+.action-btns {
+    margin: 5% 0%;
+}
+.action-btns > button:nth-child(2) {
+    margin-left: 5%;
+}
+.action-btns > button {
+    padding: 3%;
+    transform: scale(1);
+}
