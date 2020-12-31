@@ -20,9 +20,12 @@ export default function Home() {
             .then(res => res.json())
             .then(d => {
                 if (!localStorage.getItem("data")) {
+                    setdata(d);
                     localStorage.setItem("data", JSON.stringify(d));
+                }else{
+                    setdata(JSON.parse(localStorage.getItem("data")));
                 }
-                setdata(d);
+                
             })
             .catch(err => {
                 console.log(err);
@@ -60,13 +63,18 @@ export default function Home() {
                     </button>
                 </div>
                 <div className="w-100 d-flex flex-wrap ">
-                    {data.map(element => {
+                    {data.map((element,idx) => {
                         return (
                             <CandidateCard
                                 key={element.id}
                                 image={element.Image}
                                 name={element.name}
                                 id={element.id}
+                                image={element.Image}
+                                status={element.status}
+                                idx={idx}
+                                actions={true}
+                                key={element.id}
                             />
                         );
                     })}
